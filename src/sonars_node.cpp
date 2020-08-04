@@ -25,8 +25,7 @@ int main(int argc, char** argv)
   ros::Rate loop_rate(50);
   sensor_msgs::Range RangeMsg;
   uint8_t u8Status = 0x00;
-  uint8_t u8SonarId = empty_id;
-  float fSonarRange = out_of_range_value;
+  SonarMeasurment Measurement;
   // Standard for every sensor
   RangeMsg.header.frame_id = "sonars_link";
   RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
@@ -40,15 +39,15 @@ int main(int argc, char** argv)
     {
       while (true)
       {
-        SonarsCommHandler.vReturnSonarRange(&u8SonarId, &fSonarRange);
-        if (u8SonarId == empty_id)
+        SonarsCommHandler.vReturnSonarRange(&Measurement);
+        if (Measurement.u8ID == empty_id)
         {
           ROS_INFO("[Sonars] Sonars queue empty");
           break;
         }
         else
         {
-          //send proper Range.msg depending on the sonar ID
+          // send proper Range.msg depending on the sonar ID
           ROS_INFO("[Sonars] Reading sonars");
         }
       }

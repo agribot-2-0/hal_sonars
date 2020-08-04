@@ -40,13 +40,15 @@ uint8_t SonarsCanHandler::u8ParseCanFrames()
 {
   uint8_t u8Status = 0;
   can_frame message;
+  SonarMeasurment temp;
   while (!_FramesQueue.empty())
   {
     message = _FramesQueue.front();
     if ((sonars_frame_CAN_ID & addr_mask) == (message.can_id & addr_mask))
     {
-      _SonarsID.push(message.data[0]);
-      _SonarsRange.push((static_cast<float>(i16GetTwoBytes(range_byte, message)) / cons_scale));
+      temp.u8ID = message.data[id_byte];
+      temp.fRange = (static_cast<float>(i16GetTwoBytes(range_byte, message)) / cons_scale);
+      _SonarsReading.push(temp);
       u8Status |= received_sonars_frame;
     }
     _FramesQueue.pop();
@@ -54,17 +56,16 @@ uint8_t SonarsCanHandler::u8ParseCanFrames()
   return u8Status;
 }
 
-void SonarsCanHandler::vReturnSonarRange(uint8_t* u8sonars_id, float* fRange)
+void SonarsCanHandler::vReturnSonarRange(SonarMeasurment* Measurement)
 {
-  if (_SonarsID.empty())
+  if (_SonarsReading.empty())
   {
-    *u8sonars_id = empty_id;
+    Measurement->u8ID = empty_id;
   }
   else
   {
-    *u8sonars_id = _SonarsID.front();
-    *fRange = _SonarsRange.front();
-    _SonarsID.pop();
-    _SonarsRange.pop();
+    Measurement->u8ID = _SonarsReading.front().u8ID;
+    Measurement->fRange = _SonarsReading.front().fRange;
+    _SonarsReading.pop();
   }
 }
