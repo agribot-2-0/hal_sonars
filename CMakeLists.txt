@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   agribot_common
-  agribot_msgs
   roscpp
   rospy
   tf2
