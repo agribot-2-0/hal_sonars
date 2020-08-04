@@ -12,9 +12,16 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "sonars");
   ros::NodeHandle nh("~");
   std::string can_interface;
-  nh.getParam("can_interface", can_interface);
+  if (nh.hasParam("/sonars_node/can_interface"))
+  {
+    nh.getParam("/sonars_node/can_interface", can_interface);
+  }
+  else
+  {
+    ROS_INFO("[Sonars] Missing parameter specifying can_interface, setting the default value: can0");
+    can_interface = "can0";
+  }
   SonarsCanHandler SonarsCommHandler(can_interface.c_str());
-
   ros::Rate loop_rate(50);
   sensor_msgs::Range RangeMsg;
   uint8_t u8Status = 0x00;
@@ -41,6 +48,7 @@ int main(int argc, char** argv)
         }
         else
         {
+          //send proper Range.msg depending on the sonar ID
           ROS_INFO("[Sonars] Reading sonars");
         }
       }
