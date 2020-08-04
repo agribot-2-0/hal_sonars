@@ -35,12 +35,12 @@ int main(int argc, char** argv)
     RangeMsg.header.stamp = ros::Time::now();
     SonarsCommHandler.vReceiveCanFrames();
     u8Status = SonarsCommHandler.u8ParseCanFrames();
-    if ((u8Status & received_sonars_frame) == received_sonars_frame)
+    if ((u8Status & SonarsCommHandler.received_sonars_frame) == SonarsCommHandler.received_sonars_frame)
     {
       while (true)
       {
         SonarsCommHandler.vReturnSonarRange(&Measurement);
-        if (Measurement.u8ID == empty_id)
+        if (Measurement.u8ID == SonarsCommHandler.empty_id)
         {
           ROS_INFO("[Sonars] Sonars queue empty");
           break;

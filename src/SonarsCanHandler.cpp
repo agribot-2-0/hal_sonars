@@ -3,12 +3,6 @@
  */
 #include <SonarsCanHandler.h>
 
-constexpr uint addr_mask = 0xFFFFFF;
-constexpr uint sonars_frame_CAN_ID = 0x000FFD864;
-constexpr uint cons_scale = 1000;
-constexpr uint8_t id_byte = 0;
-constexpr uint8_t range_byte = 1;
-
 SonarsCanHandler::SonarsCanHandler(const char* pchCanChannel)
 {
   _CanHandler.iInitialize(pchCanChannel);
