@@ -1,0 +1,3 @@
+<launch>
+    <node name="sonars_node" pkg="hal_sonars" type="sonars_node" _can_interface:=can0/>
+</launch>
