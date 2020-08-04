@@ -1,0 +1,26 @@
+#possible types are balluf and motec
+
+# left_front_sonar
+sonar0_topic: /agribot/sonar/left_front
+sonar0_ID: 0
+sonar0_type: balluf
+
+# left_back_sonar
+sonar1_topic: /agribot/sonar/left_back
+sonar1_ID: 1
+sonar1_type: balluf
+
+# right_front_sonar
+sonar2_topic: /agribot/sonar/right_front
+sonar2_ID: 2
+sonar2_type: motec
+
+# right_back_sonar
+sonar3_topic: /agribot/sonar/right_back
+sonar3_ID: 3
+sonar3_type: motec
+
+# left_front_sonar
+sonar4_topic: /agribot/sonar/left_front
+sonar4_ID: 4
+sonar4_type: motec

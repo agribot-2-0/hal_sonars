@@ -1,0 +1,4 @@
+<launch>
+    <param name="/sonars_node/can_interface" type="string" value="can0"/>
+    <node name="sonars_node" pkg="hal_sonars" type="sonars_node"/>
+</launch>
