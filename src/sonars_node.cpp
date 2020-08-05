@@ -3,9 +3,10 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <sensor_msgs/Range.h>
 #include <SonarsCanHandler.h>
 #include <SonarTypes.h>
+#include <Sonars.h>
+#include <sensor_msgs/Range.h>
 
 int main(int argc, char** argv)
 {
@@ -21,18 +22,14 @@ int main(int argc, char** argv)
     ROS_INFO("[Sonars] Missing parameter specifying can_interface, setting the default value: can0");
     can_interface = "can0";
   }
+  Sonars SonarsHandler(&nh);
   SonarsCanHandler SonarsCommHandler(can_interface.c_str());
   ros::Rate loop_rate(50);
-  sensor_msgs::Range RangeMsg;
   uint8_t u8Status = 0x00;
   SonarMeasurment Measurement;
-  // Standard for every sensor
-  RangeMsg.header.frame_id = "sonars_link";
-  RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
   while (ros::ok())
   {
     // stamp the msg
-    RangeMsg.header.stamp = ros::Time::now();
     SonarsCommHandler.vReceiveCanFrames();
     u8Status = SonarsCommHandler.u8ParseCanFrames();
     if ((u8Status & SonarsCommHandler.received_sonars_frame) == SonarsCommHandler.received_sonars_frame)
@@ -42,13 +39,12 @@ int main(int argc, char** argv)
         SonarsCommHandler.vReturnSonarRange(&Measurement);
         if (Measurement.u8ID == SonarsCommHandler.empty_id)
         {
-          ROS_INFO("[Sonars] Sonars queue empty");
           break;
         }
         else
         {
           // send proper Range.msg depending on the sonar ID
-          ROS_INFO("[Sonars] Reading sonars");
+          SonarsHandler.vPublishSonarData(Measurement);
         }
       }
     }
