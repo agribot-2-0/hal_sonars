@@ -1,6 +1,10 @@
+/*
+ * Copyright (C) 2020 Agribot. All rights reserved.
+ */
 #pragma once
 #include <ros/ros.h>
 #include <sensor_msgs/Range.h>
+#include <memory>
 #include <SonarTypes.h>
 #include <unordered_map>
 #include <vector>
@@ -17,9 +21,9 @@ private:
   std::unordered_map<uint8_t, std::shared_ptr<ros::Publisher>> sonarsPublishers;
 
 public:
-  Sonars(ros::NodeHandle* _nh);
+  explicit Sonars(ros::NodeHandle* _nh);
   ~Sonars();
-  void vPublishSonarData(SonarMeasurment data);
+  void vPublishSonarData(SonarMeasurment* data);
   void vLoadSonars();
   void vCreatePublishers();
 };

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2020 Agribot. All rights reserved.
+ */
 #include "Sonars.h"
 
 Sonars::Sonars(ros::NodeHandle* _nh) : nh(_nh)
@@ -88,7 +91,7 @@ void Sonars::vCreatePublishers()
   }
 }
 
-void Sonars::vPublishSonarData(SonarMeasurment sonar_data)
+void Sonars::vPublishSonarData(SonarMeasurment* sonar_data)
 {
   sensor_msgs::Range RangeMsg;
   // Standard for every sensor
@@ -96,15 +99,15 @@ void Sonars::vPublishSonarData(SonarMeasurment sonar_data)
   RangeMsg.header.frame_id = "sonars_link";
   RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
   // from sonar specification
-  RangeMsg.min_range = sonarsList[sonar_data.u8ID].min_range;
-  RangeMsg.max_range = sonarsList[sonar_data.u8ID].max_range;
-  RangeMsg.range = sonar_data.fRange;
+  RangeMsg.min_range = sonarsList[sonar_data->u8ID].min_range;
+  RangeMsg.max_range = sonarsList[sonar_data->u8ID].max_range;
+  RangeMsg.range = sonar_data->fRange;
   // Find the publisher
   std::unordered_map<uint8_t, std::shared_ptr<ros::Publisher>>::iterator pub;
-  pub = sonarsPublishers.find(sonar_data.u8ID);
+  pub = sonarsPublishers.find(sonar_data->u8ID);
   if (pub == sonarsPublishers.end())
   {
-    ROS_ERROR_STREAM("[HAL Sonars] Attempted to publish unregistered sonar with ID: " << sonar_data.u8ID);
+    ROS_ERROR_STREAM("[HAL Sonars] Attempted to publish unregistered sonar with ID: " << sonar_data->u8ID);
   }
   else
   {

@@ -35,7 +35,7 @@ struct SonarDevice
   SonarTypeEnum type;
   float min_range;
   float max_range;
-  
+
   void vSetType(BallufSonar balluf_type)
   {
     type = BALLUF;

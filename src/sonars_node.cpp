@@ -44,7 +44,7 @@ int main(int argc, char** argv)
         else
         {
           // send proper Range.msg depending on the sonar ID
-          SonarsHandler.vPublishSonarData(Measurement);
+          SonarsHandler.vPublishSonarData(&Measurement);
         }
       }
     }
