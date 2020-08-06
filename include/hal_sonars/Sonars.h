@@ -2,10 +2,10 @@
  * Copyright (C) 2020 Agribot. All rights reserved.
  */
 #pragma once
-#include <ros/ros.h>
+#include <hal_sonars/SonarTypes.h>
 #include <sensor_msgs/Range.h>
+#include <ros/ros.h>
 #include <memory>
-#include <SonarTypes.h>
 #include <unordered_map>
 #include <vector>
 
@@ -23,7 +23,7 @@ private:
 public:
   explicit Sonars(ros::NodeHandle* _nh);
   ~Sonars();
-  bool vPublishSonarData(SonarMeasurment* data);
-  bool vLoadSonars();
-  bool vCreatePublishers();
+  bool vPublishSonarData(const SonarMeasurment* data);
+  bool bLoadSonars();
+  bool bCreatePublishers();
 };

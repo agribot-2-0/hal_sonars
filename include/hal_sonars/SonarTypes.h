@@ -18,14 +18,14 @@ struct SonarMeasurment
 
 struct BallufSonar
 {
-  static constexpr float min_range{0.3};
-  static constexpr float max_range{5.0};
+  static constexpr float min_range{ 0.3 };
+  static constexpr float max_range{ 5.0 };
 };
 
 struct MotecSonar
 {
-  static constexpr float min_range{0.2};
-  static constexpr float max_range{3.0};
+  static constexpr float min_range{ 0.2 };
+  static constexpr float max_range{ 3.0 };
 };
 
 struct SonarDevice
@@ -37,7 +37,6 @@ struct SonarDevice
   float max_range;
   bool vSetType(std::string sonar_type)
   {
-
     if (sonar_type == "balluf")
     {
       type = SonarTypeEnum::BALLUF;

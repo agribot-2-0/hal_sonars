@@ -1,21 +1,17 @@
 /*
  * Copyright (C) 2020 Agribot. All rights reserved.
  */
-#include "Sonars.h"
+#include "hal_sonars/Sonars.h"
 
 Sonars::Sonars(ros::NodeHandle* _nh) : nh(_nh)
 {
-  if (!vLoadSonars())
-    ros::shutdown();
-  if (!vCreatePublishers())
-    ros::shutdown();
 }
 
 Sonars::~Sonars()
 {
 }
 
-bool Sonars::vLoadSonars()
+bool Sonars::bLoadSonars()
 {
   bool allParametersLoaded = false;
   uint8_t sonar_count = 0;
@@ -48,8 +44,7 @@ bool Sonars::vLoadSonars()
           ROS_ERROR_STREAM("[HAL Sonars] Error in type configuration, input: " << type << " for device sonar" << id);
           break;
         }
-        std::pair<uint8_t, SonarDevice> sonarPair(id, sonarDevTemp);
-        sonarsMap.insert(sonarPair);
+        sonarsMap.insert({ id, sonarDevTemp });
         ROS_INFO_STREAM("[HAL Sonars] ID: " << sonarDevTemp.ID << " Topic: " << sonarDevTemp.topic
                                             << " Type: " << static_cast<int>(sonarDevTemp.type) << "\n min range: "
                                             << sonarDevTemp.min_range << "max range: " << sonarDevTemp.max_range);
@@ -68,60 +63,51 @@ bool Sonars::vLoadSonars()
   if (!allParametersLoaded)
   {
     // Error in configuration - no threshold for this sonar
-    ROS_ERROR_STREAM("[HAL Sonars] Error in configuration, last proper sonar ID read: " << id);
+    ROS_ERROR_STREAM("[HAL Sonars] Error in configuration, last proper sonar ID read: sonar" << id);
     return false;
   }
   return true;
 }
 
-bool Sonars::vCreatePublishers()
+bool Sonars::bCreatePublishers()
 {
-  for (auto sonar = sonarsMap.begin(); sonar != sonarsMap.end(); ++sonar)
+  for (const auto sonar : sonarsMap)
   {
     // Create publisher shared ptr to avoid copying, when inserting into map
     std::shared_ptr<ros::Publisher> pub = std::make_shared<ros::Publisher>();
     // Set up a publisher
-    *pub = nh->advertise<sensor_msgs::Range>(sonar->second.topic, 1000);
-    // and add Publisher to subscribers map
-    std::pair<uint8_t, std::shared_ptr<ros::Publisher>> pubPair(sonar->first, pub);
-    sonarsPublishers.insert(pubPair);
+    *pub = nh->advertise<sensor_msgs::Range>(sonar.second.topic, 1000);
+    // and add Publisher to publishers map
+    sonarsPublishers.insert({ sonar.first, pub });
   }
   return true;
 }
 
-bool Sonars::vPublishSonarData(SonarMeasurment* sonar_data)
+bool Sonars::vPublishSonarData(const SonarMeasurment* sonar_data)
 {
   // Find the sonar data
-  std::unordered_map<uint8_t, SonarDevice>::iterator sonar;
-  sonar = sonarsMap.find(sonar_data->u8ID);
+  auto sonar = sonarsMap.find(sonar_data->u8ID);
   if (sonar == sonarsMap.end())
   {
     ROS_ERROR_STREAM("[HAL Sonars] Attempted to read unregistered sonar with ID: " << sonar_data->u8ID);
     return false;
   }
-  else
+  sensor_msgs::Range RangeMsg;
+  // Standard for every sensor
+  RangeMsg.header.stamp = ros::Time::now();
+  RangeMsg.header.frame_id = "sonars_link";
+  RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
+  // from sonar specification
+  RangeMsg.min_range = sonar->second.min_range;
+  RangeMsg.max_range = sonar->second.max_range;
+  RangeMsg.range = sonar_data->fRange;
+  // Find the publisher
+  auto pub = sonarsPublishers.find(sonar_data->u8ID);
+  if (pub == sonarsPublishers.end())
   {
-    sensor_msgs::Range RangeMsg;
-    // Standard for every sensor
-    RangeMsg.header.stamp = ros::Time::now();
-    RangeMsg.header.frame_id = "sonars_link";
-    RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
-    // from sonar specification
-    RangeMsg.min_range = sonar->second.min_range;
-    RangeMsg.max_range = sonar->second.max_range;
-    RangeMsg.range = sonar_data->fRange;
-    // Find the publisher
-    std::unordered_map<uint8_t, std::shared_ptr<ros::Publisher>>::iterator pub;
-    pub = sonarsPublishers.find(sonar_data->u8ID);
-    if (pub == sonarsPublishers.end())
-    {
-      ROS_ERROR_STREAM("[HAL Sonars] Attempted to publish unregistered sonar with ID: " << sonar_data->u8ID);
-      return false;
-    }
-    else
-    {
-      pub->second->publish(RangeMsg);
-      return true;
-    }
+    ROS_ERROR_STREAM("[HAL Sonars] Attempted to publish unregistered sonar with ID: " << sonar_data->u8ID);
+    return false;
   }
+  pub->second->publish(RangeMsg);
+  return true;
 }

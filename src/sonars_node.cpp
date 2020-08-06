@@ -3,9 +3,9 @@
  */
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <SonarsCanHandler.h>
-#include <SonarTypes.h>
-#include <Sonars.h>
+#include <hal_sonars/SonarsCanHandler.h>
+#include <hal_sonars/SonarTypes.h>
+#include <hal_sonars/Sonars.h>
 #include <sensor_msgs/Range.h>
 
 int main(int argc, char** argv)
@@ -23,6 +23,10 @@ int main(int argc, char** argv)
     can_interface = "can0";
   }
   Sonars SonarsHandler(&nh);
+  if (!SonarsHandler.bLoadSonars())
+    ros::shutdown();
+  if (!SonarsHandler.bCreatePublishers())
+    ros::shutdown();
   SonarsCanHandler SonarsCommHandler(can_interface.c_str());
   ros::Rate loop_rate(50);
   uint8_t u8Status = 0x00;
