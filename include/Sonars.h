@@ -15,15 +15,15 @@ private:
   // ROS handlers
   ros::NodeHandle* nh;
 
-  // Sonars map
-  std::vector<SonarDevice> sonarsList;
+  // Sonars map with ID as a key
+  std::unordered_map<uint8_t, SonarDevice> sonarsMap;
   // Publishers map with id as a key
   std::unordered_map<uint8_t, std::shared_ptr<ros::Publisher>> sonarsPublishers;
 
 public:
   explicit Sonars(ros::NodeHandle* _nh);
   ~Sonars();
-  void vPublishSonarData(SonarMeasurment* data);
-  void vLoadSonars();
-  void vCreatePublishers();
+  bool vPublishSonarData(SonarMeasurment* data);
+  bool vLoadSonars();
+  bool vCreatePublishers();
 };

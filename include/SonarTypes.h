@@ -4,7 +4,7 @@
 #pragma once
 #include <string>
 
-enum SonarTypeEnum
+enum class SonarTypeEnum
 {
   BALLUF = 0,
   MOTEC = 1
@@ -18,14 +18,14 @@ struct SonarMeasurment
 
 struct BallufSonar
 {
-  float min_range = 0.3;
-  float max_range = 5.0;
+  static constexpr float min_range{0.3};
+  static constexpr float max_range{5.0};
 };
 
 struct MotecSonar
 {
-  float min_range = 0.2;
-  float max_range = 3.0;
+  static constexpr float min_range{0.2};
+  static constexpr float max_range{3.0};
 };
 
 struct SonarDevice
@@ -35,18 +35,26 @@ struct SonarDevice
   SonarTypeEnum type;
   float min_range;
   float max_range;
-
-  void vSetType(BallufSonar balluf_type)
+  bool vSetType(std::string sonar_type)
   {
-    type = BALLUF;
-    min_range = balluf_type.min_range;
-    max_range = balluf_type.max_range;
-  }
 
-  void vSetType(MotecSonar motec_type)
-  {
-    type = MOTEC;
-    min_range = motec_type.min_range;
-    max_range = motec_type.max_range;
+    if (sonar_type == "balluf")
+    {
+      type = SonarTypeEnum::BALLUF;
+      min_range = BallufSonar::min_range;
+      max_range = BallufSonar::max_range;
+      return true;
+    }
+    else if (sonar_type == "motec")
+    {
+      type = SonarTypeEnum::MOTEC;
+      min_range = MotecSonar::min_range;
+      max_range = MotecSonar::max_range;
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 };
