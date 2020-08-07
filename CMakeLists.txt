@@ -45,6 +45,8 @@ catkin_package(
 ## Build                                                                   ##
 #############################################################################
 
+add_compile_options(-std=c++17)
+
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
