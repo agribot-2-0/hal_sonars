@@ -60,7 +60,7 @@ bool Sonars::bLoadSonars()
   {
     // Error in configuration - no threshold for this sonar
     ROS_ERROR_STREAM("[HAL Sonars] Error in configuration, last proper sonar ID read: sonar"
-                     << static_cast<int> (sonar_count));
+                     << static_cast<int>(sonar_count));
     return false;
   }
   return true;
@@ -87,7 +87,8 @@ bool Sonars::vPublishSonarData(const SonarMeasurment* sonar_data)
   auto pub = sonarsPublishers.find(sonar_data->u8ID);
   if (pub == sonarsPublishers.end())
   {
-    ROS_ERROR_STREAM("[HAL Sonars] Attempted to publish unregistered sonar with ID: " << sonar_data->u8ID);
+    ROS_ERROR_STREAM(
+        "[HAL Sonars] Attempted to publish unregistered sonar with ID: " << static_cast<int>(sonar_data->u8ID));
     return false;
   }
   // Find the sonar data
@@ -95,7 +96,8 @@ bool Sonars::vPublishSonarData(const SonarMeasurment* sonar_data)
   auto sonar = sonarsMap.find(sonar_data->u8ID);
   if (sonar == sonarsMap.end())
   {
-    ROS_ERROR_STREAM("[HAL Sonars] Attempted to read unregistered sonar with ID: " << sonar_data->u8ID);
+    ROS_ERROR_STREAM(
+        "[HAL Sonars] Attempted to read unregistered sonar with ID: " << static_cast<int>(sonar_data->u8ID));
     return false;
   }
   sensor_msgs::Range RangeMsg;
