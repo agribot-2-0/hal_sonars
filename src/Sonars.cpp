@@ -36,13 +36,14 @@ bool Sonars::bLoadSonars()
         if (!sonarDevTemp.vSetType(type))
         {
           // Error in configuration - wrong type for this sonar
-          ROS_ERROR_STREAM("[HAL Sonars] Error in type configuration, input: " << type << " for device sonar" << sonarDevTemp.ID);
+          ROS_ERROR_STREAM("[HAL Sonars] Error in type configuration, input: " << type << " for device sonar"
+                                                                               << sonarDevTemp.ID);
           break;
         }
         sonarsMap.insert({ sonarDevTemp.ID, sonarDevTemp });
         ROS_INFO_STREAM("[HAL Sonars] ID: " << sonarDevTemp.ID << " Topic: " << sonarDevTemp.topic
                                             << " Type: " << static_cast<int>(sonarDevTemp.type) << "\n min range: "
-                                            << sonarDevTemp.min_range << "max range: " << sonarDevTemp.max_range);                        
+                                            << sonarDevTemp.min_range << "max range: " << sonarDevTemp.max_range);
       }
       else
       {
