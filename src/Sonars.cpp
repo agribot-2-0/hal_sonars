@@ -32,6 +32,7 @@ bool Sonars::bLoadSonars()
       if (nh->hasParam(topicField) && nh->hasParam(typeField))
       {
         nh->getParam(topicField, sonarDevTemp.topic);
+        sonarDevTemp.bCreateAndWriteLinkName(sonarDevTemp.topic);
         nh->getParam(typeField, type);
         if (!sonarDevTemp.vSetType(type))
         {
@@ -103,7 +104,7 @@ bool Sonars::vPublishSonarData(const SonarMeasurment* sonar_data)
   sensor_msgs::Range RangeMsg;
   // Standard for every sensor
   RangeMsg.header.stamp = ros::Time::now();
-  RangeMsg.header.frame_id = "sonars_link";
+  RangeMsg.header.frame_id = sonar->second.link_name;
   RangeMsg.radiation_type = RangeMsg.ULTRASOUND;
   // from sonar specification
   RangeMsg.min_range = sonar->second.min_range;

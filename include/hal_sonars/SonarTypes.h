@@ -32,9 +32,36 @@ struct SonarDevice
 {
   int ID;
   std ::string topic;
+  std ::string link_name;
   SonarTypeEnum type;
   float min_range;
   float max_range;
+  bool bCreateAndWriteLinkName(std::string source)
+  {
+    bool first_char = true;
+    link_name.clear();
+    if (!source.empty())
+    {
+      for (auto& str_elem : source)
+      {
+        if (!first_char)
+        {
+          if (str_elem == '/')
+          {
+            link_name = link_name + "_";
+          }
+          else
+          {
+            link_name = link_name + str_elem;
+          }
+        }
+        first_char = false;
+      }
+      link_name = link_name + "_link";
+      return true;
+    }
+    return false;
+  }
   bool vSetType(std::string sonar_type)
   {
     if (sonar_type == "balluf")
