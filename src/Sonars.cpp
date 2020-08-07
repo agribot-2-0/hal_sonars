@@ -59,7 +59,8 @@ bool Sonars::bLoadSonars()
   if (!allParametersLoaded)
   {
     // Error in configuration - no threshold for this sonar
-    ROS_ERROR_STREAM("[HAL Sonars] Error in configuration, last proper sonar ID read: sonar" << sonar_count);
+    ROS_ERROR_STREAM("[HAL Sonars] Error in configuration, last proper sonar ID read: sonar"
+                     << static_cast<int> (sonar_count));
     return false;
   }
   return true;

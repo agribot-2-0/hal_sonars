@@ -2,11 +2,11 @@
 # Front bumper sonars
 sonar0_topic: /bumper/front/sonar/left_side
 sonar0_ID: 0
-sonar0_type: motec
+sonar0_type: bosh
 
 sonar1_topic: /bumper/front/sonar/left
 sonar1_ID: 1
-sonar1_type: motec
+sonar1_type: bosh
 
 sonar2_topic: /bumper/front/sonar/center
 sonar2_ID: 2
@@ -14,38 +14,38 @@ sonar2_type: balluf
 
 sonar3_topic: /bumper/front/sonar/right
 sonar3_ID: 3
-sonar3_type: motec
+sonar3_type: bosh
 
 sonar4_topic: /bumper/front/sonar/right_side
 sonar4_ID: 4
-sonar4_type: motec
+sonar4_type: bosh
 
 # Left side sonars
 sonar5_topic: /agribot/sonar/left/front
 sonar5_ID: 5
-sonar5_type: motec
+sonar5_type: bosh
 
 sonar6_topic: /agribot/sonar/left/back
 sonar6_ID: 6
-sonar6_type: motec
+sonar6_type: bosh
 
 # Right side sonars
 sonar7_topic: /agribot/sonar/right/front
 sonar7_ID: 7
-sonar7_type: motec
+sonar7_type: bosh
 
 sonar8_topic: /agribot/sonar/right/back
 sonar8_ID: 8
-sonar8_type: motec
+sonar8_type: bosh
 
 # Back bumper sonars
 sonar9_topic: /bumper/back/sonar/left_side
 sonar9_ID: 9
-sonar9_type: motec
+sonar9_type: bosh
 
 sonar10_topic: /bumper/back/sonar/left
 sonar10_ID: 10
-sonar10_type: motec
+sonar10_type: bosh
 
 sonar11_topic: /bumper/back/sonar/center
 sonar11_ID: 11
@@ -53,8 +53,8 @@ sonar11_type: balluf
 
 sonar12_topic: /bumper/back/sonar/right
 sonar12_ID: 12
-sonar12_type: motec
+sonar12_type: bosh
 
 sonar13_topic: /bumper/back/sonar/right_side
 sonar13_ID: 13
-sonar13_type: motec
+sonar13_type: bosh

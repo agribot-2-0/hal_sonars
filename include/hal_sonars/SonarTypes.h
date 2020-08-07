@@ -7,7 +7,7 @@
 enum class SonarTypeEnum
 {
   BALLUF = 0,
-  MOTEC = 1
+  BOSH = 1
 };
 
 struct SonarMeasurment
@@ -22,7 +22,7 @@ struct BallufSonar
   static constexpr float max_range{ 5.0 };
 };
 
-struct MotecSonar
+struct BoshSonar
 {
   static constexpr float min_range{ 0.2 };
   static constexpr float max_range{ 3.0 };
@@ -44,11 +44,11 @@ struct SonarDevice
       max_range = BallufSonar::max_range;
       return true;
     }
-    else if (sonar_type == "motec")
+    else if (sonar_type == "bosh")
     {
-      type = SonarTypeEnum::MOTEC;
-      min_range = MotecSonar::min_range;
-      max_range = MotecSonar::max_range;
+      type = SonarTypeEnum::BOSH;
+      min_range = BoshSonar::min_range;
+      max_range = BoshSonar::max_range;
       return true;
     }
     else
