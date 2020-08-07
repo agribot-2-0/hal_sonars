@@ -2,11 +2,10 @@
  * Copyright (C) 2020 Agribot. All rights reserved.
  */
 #pragma once
-
+#include <hal_sonars/SonarTypes.h>
 #include <agribot_common/Can.h>
-#include <queue>
 #include <cmath>
-#include <SonarTypes.h>
+#include <queue>
 
 class SonarsCanHandler
 {

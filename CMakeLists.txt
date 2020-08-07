@@ -45,6 +45,8 @@ catkin_package(
 ## Build                                                                   ##
 #############################################################################
 
+add_compile_options(-std=c++17)
+
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
@@ -52,7 +54,7 @@ include_directories(
 )
 
 link_directories("${PROJECT_SOURCE_DIR}")
-add_executable(sonars_node src/sonars_node.cpp src/SonarsCanHandler.cpp)
+add_executable(sonars_node src/sonars_node.cpp src/SonarsCanHandler.cpp src/Sonars.cpp)
 target_link_libraries(sonars_node ${catkin_LIBRARIES})
 add_dependencies(sonars_node ${catkin_EXPORTED_TARGETS})
 
@@ -66,7 +68,7 @@ install(TARGETS
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-install(DIRECTORY launch
+install(DIRECTORY launch param
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   PATTERN ".svn" EXCLUDE
 )
